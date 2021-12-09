@@ -28,7 +28,7 @@ class FacadesDataset(torch.utils.data.Dataset):
         root = Path(root)
         if not root.exists() or not any(root.iterdir()):
             self._download(root)
-        paths = sorted(root.glob(f'**/{split}/*.jpg'))
+        paths = sorted(root.glob(f'facades/{split}/*.jpg'))
         self.data = []
         for p in paths:
             img = Image.open(p)
