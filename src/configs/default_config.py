@@ -28,7 +28,7 @@ class DefaultConfig:
     betas: Tuple[float, float] = (0.5, 0.999)
     # Training params
     epoch_num_iters: int = 2000
-    num_epochs: int = 10
+    num_epochs: int = 50
     train_batch_size: int = 1
     train_log_freq: int = 100
     train_num_workers: int = 0
