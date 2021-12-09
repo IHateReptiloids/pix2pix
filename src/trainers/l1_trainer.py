@@ -108,6 +108,6 @@ class L1Trainer:
         if self.logger is not None:
             self.logger.commit()
             self.logger.run.log(
-                {'val/loss': loss.item()}, step=self.scheduler.last_epoch
+                {'val/loss': total_loss}, step=self.scheduler.last_epoch
             )
         return total_loss / len(self.val_loader)
