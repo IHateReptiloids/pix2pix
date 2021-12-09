@@ -26,7 +26,10 @@ class FacadesDataset(torch.utils.data.Dataset):
         super().__init__()
         assert split in ['train', 'val', 'test']
         root = Path(root)
-        if not root.exists() or not any(root.iterdir()):
+        if (
+            not (root / 'facades').exists() or
+            not any((root / 'facades').iterdir())
+        ):
             self._download(root)
         paths = sorted(root.glob(f'facades/{split}/*.jpg'))
         self.data = []
