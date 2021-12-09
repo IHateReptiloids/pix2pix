@@ -17,6 +17,7 @@ class L1Trainer:
         val_loader,
         logger=None
     ):
+        self.device = config.device
         self.model = model
         self.opt = opt
         self.scheduler = scheduler
@@ -38,6 +39,8 @@ class L1Trainer:
         self.scheduler.load_state_dict(state['scheduler'])
 
     def process_batch(self, x, y, train: bool):
+        x = x.to(self.device)
+        y = y.to(self.device)
         out = self.model(x)
         loss = F.l1_loss(out, y)
         if self.logger is not None:

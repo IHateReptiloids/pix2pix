@@ -6,11 +6,15 @@ from PIL import Image
 import torch
 import torchvision
 
-DEFAULT_TRANSFORMS = torchvision.transforms.Compose([
-    torchvision.transforms.Resize(286),
-    torchvision.transforms.RandomCrop(256),
-    torchvision.transforms.RandomHorizontalFlip()
-])
+DEFAULT_TRANSFORMS = {
+    'train': torchvision.transforms.Compose([
+        torchvision.transforms.Resize(286),
+        torchvision.transforms.RandomCrop(256),
+        torchvision.transforms.RandomHorizontalFlip()
+    ]),
+    'val': torch.nn.Identity(),
+    'test': torch.nn.Identity()
+}
 
 URL = 'http://efrosgans.eecs.berkeley.edu/pix2pix/datasets/facades.tar.gz'
 
@@ -20,8 +24,7 @@ class FacadesDataset(torch.utils.data.Dataset):
         self,
         split,
         root='data',
-        transforms=DEFAULT_TRANSFORMS,
-        device=torch.device('cpu')
+        transforms=None,
     ):
         super().__init__()
         assert split in ['train', 'val', 'test']
@@ -39,7 +42,9 @@ class FacadesDataset(torch.utils.data.Dataset):
             img = img.view(img.shape[0], img.shape[1], 2, img.shape[2] // 2)
             img = img.permute(2, 0, 1, 3)
             img = torch.flip(img, dims=[0])
-            self.data.append(img.to(device))
+            self.data.append(img)
+        if transforms is None:
+            transforms = DEFAULT_TRANSFORMS[split]
         self.transforms = transforms
 
     def __getitem__(self, index):
