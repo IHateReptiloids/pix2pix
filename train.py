@@ -27,7 +27,7 @@ train_ds = ds_cls('train', device=config.device)
 val_ds = ds_cls('val', transforms=torch.nn.Identity(), device=config.device)
 train_loader, val_loader = get_dataloaders(train_ds, val_ds, config)
 
-model = model_cls.from_config(config).to(config.device)
+model = model_cls.from_config(config).to(config.device).train()
 opt = torch.optim.Adam(model.parameters(), lr=config.lr, betas=config.betas)
 scheduler = torch.optim.lr_scheduler.LambdaLR(opt, lambda _: 1.0)
 logger = None

@@ -62,7 +62,8 @@ class UNet(nn.Module):
             x = enc(x)
             outputs.append(x)
 
-        x = torch.empty(x.shape[0], 0, x.shape[2], x.shape[3])
+        x = torch.empty(x.shape[0], 0, x.shape[2], x.shape[3]) \
+            .to(outputs[-1].device)
         for dec, copied in zip(self.decoder, outputs[::-1]):
             x = torch.cat((copied, x), dim=1)
             expected_shape = tuple(map(lambda elem: elem * 2, x.shape[-2:]))
