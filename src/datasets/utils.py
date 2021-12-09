@@ -1,0 +1,33 @@
+from torch.utils.data import DataLoader
+
+
+class VariableLengthLoader:
+    def __init__(self, loader, num_iters):
+        self.loader = loader
+        self.num_iters = num_iters
+        self._cur_iters = 0
+
+    def __iter__(self):
+        while True:
+            for elem in self.loader:
+                yield elem
+                self._cur_iters += 1
+                if self._cur_iters == self.num_iters:
+                    self._cur_iters = 0
+                    return
+
+    def __len__(self):
+        return self.num_iters
+
+
+def get_dataloaders(train_ds, val_ds, config):
+    assert config.train_batch_size == config.val_batch_size == 1
+    train_loader = DataLoader(
+        train_ds, config.train_batch_size, shuffle=True,
+        num_workers=config.train_num_workers)
+    val_loader = DataLoader(
+        val_ds, config.val_batch_size, shuffle=True,
+        num_workers=config.val_num_workers
+    )
+    return (VariableLengthLoader(train_loader, config.epoch_num_iters),
+            val_loader)
