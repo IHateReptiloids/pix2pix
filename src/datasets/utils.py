@@ -1,3 +1,4 @@
+import torch
 from torch.utils.data import DataLoader
 
 
@@ -21,13 +22,27 @@ class VariableLengthLoader:
 
 
 def get_dataloaders(train_ds, val_ds, config):
-    assert config.train_batch_size == config.val_batch_size == 1
-    train_loader = DataLoader(
-        train_ds, config.train_batch_size, shuffle=True,
-        num_workers=config.train_num_workers)
-    val_loader = DataLoader(
-        val_ds, config.val_batch_size, shuffle=True,
-        num_workers=config.val_num_workers
-    )
-    return (VariableLengthLoader(train_loader, config.epoch_num_iters),
-            val_loader)
+    train_loader = None
+    if train_ds is not None:
+        train_loader = DataLoader(
+            train_ds, config.train_batch_size, shuffle=True,
+            num_workers=config.train_num_workers, collate_fn=id_collator
+        )
+        train_loader = VariableLengthLoader(train_loader,
+                                            config.epoch_num_iters)
+
+    val_loader = None
+    if val_ds is not None:
+        val_loader = DataLoader(
+            val_ds, config.val_batch_size, shuffle=True,
+            num_workers=config.val_num_workers, collate_fn=id_collator
+        )
+    return train_loader, val_loader
+
+
+def id_collator(objects):
+    '''
+    stacks objects along batch axis
+    '''
+    x, y = list(zip(*objects))
+    return torch.stack(x, dim=0), torch.stack(y, dim=0)

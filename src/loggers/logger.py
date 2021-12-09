@@ -1,3 +1,4 @@
+import torch
 import wandb
 
 
@@ -28,15 +29,17 @@ class WandbLogger:
         return self.run.dir
 
     def log_batch(self, x, y, out, loss, train: bool):
-        x = x.detach().cpu().squeeze().permute(1, 2, 0).numpy()
-        y = y.detach().cpu().squeeze().permute(1, 2, 0).numpy()
-        out = out.detach().cpu().squeeze().permute(1, 2, 0).numpy()
+        assert len(x) == len(y) == len(out)
+        index = torch.randint(0, len(x), (1,)).item()
+        x = x[index].detach().cpu().permute(1, 2, 0).numpy()
+        y = y[index].detach().cpu().permute(1, 2, 0).numpy()
+        out = out[index].detach().cpu().permute(1, 2, 0).numpy()
         if train:
-            self.log_train_batch(x, y, out, loss)
+            self.log_train_object(x, y, out, loss)
         else:
-            self.log_val_batch(x, y, out)
+            self.log_val_object(x, y, out)
 
-    def log_train_batch(self, x, y, out, loss):
+    def log_train_object(self, x, y, out, loss):
         self._train_log_age += 1
         data = {'train/loss': loss,
                 'train/lr': self.scheduler.get_last_lr()[0]}
@@ -49,7 +52,7 @@ class WandbLogger:
             })
         self.run.log(data, step=self.scheduler.last_epoch)
 
-    def log_val_batch(self, x, y, out):
+    def log_val_object(self, x, y, out):
         self._val_log_age += 1
         if self._val_log_age == self.val_log_freq:
             self._val_log_age = 0
