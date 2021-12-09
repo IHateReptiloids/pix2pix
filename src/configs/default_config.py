@@ -31,7 +31,7 @@ class DefaultConfig:
     num_epochs: int = 10
     train_batch_size: int = 1
     train_log_freq: int = 100
-    train_num_workers: int = 1
+    train_num_workers: int = 0
     val_batch_size: int = 1
     val_log_freq: int = 33
-    val_num_workers: int = 1
+    val_num_workers: int = 0
