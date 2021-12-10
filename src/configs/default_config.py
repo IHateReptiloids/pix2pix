@@ -14,10 +14,11 @@ class DefaultConfig:
     random_seed: int = 3407
     wandb_file_name: str = None
     wandb_run_path: str = None
-    # UNet params
+    # model params
     in_channels: int = 3
     out_channels: int = 3
-    hidden_channels: Tuple[int, ...] = (64, 128, 256, 512, 512, 512, 512)
+    unet_hidden_channels: Tuple[int, ...] = (64, 128, 256, 512, 512, 512, 512)
+    pgan_hidden_channels: Tuple[int, ...] = (64, 128, 256, 512)
     kernel_size: Tuple[int, int] = (4, 4)
     padding: Tuple[int, int, int, int] = (2, 1, 2, 1)
     stride: int = 2

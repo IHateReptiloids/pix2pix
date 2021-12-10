@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torchvision
 
+from .conv_blocks import DownBlock, UpBlock
 from src.utils import pairwise
 
 
@@ -77,56 +78,10 @@ class UNet(nn.Module):
         return cls(
             config.in_channels,
             config.out_channels,
-            config.hidden_channels,
+            config.unet_hidden_channels,
             config.kernel_size,
             config.padding,
             config.stride,
             config.relu_slope,
             config.dropout
         )
-
-
-class DownBlock(nn.Module):
-    def __init__(
-        self,
-        in_channels,
-        out_channels,
-        kernel_size,
-        padding,
-        stride,
-        relu_slope,
-        batch_norm: bool,
-    ):
-        super().__init__()
-
-        self.net = nn.Sequential(
-            nn.ZeroPad2d(padding),
-            nn.Conv2d(in_channels, out_channels, kernel_size, stride),
-            (nn.BatchNorm2d(out_channels, track_running_stats=False)
-                if batch_norm else nn.Identity()),
-            nn.LeakyReLU(relu_slope, inplace=True)
-        )
-
-    def forward(self, x):
-        return self.net(x)
-
-
-class UpBlock(nn.Module):
-    def __init__(
-        self,
-        in_channels,
-        out_channels,
-        kernel_size,
-        stride,
-        dropout,
-    ):
-        super().__init__()
-        self.net = nn.Sequential(
-            nn.ConvTranspose2d(in_channels, out_channels, kernel_size, stride),
-            nn.BatchNorm2d(out_channels, track_running_stats=False),
-            nn.Dropout(dropout, inplace=True),
-            nn.ReLU(inplace=True)
-        )
-
-    def forward(self, x):
-        return self.net(x)
