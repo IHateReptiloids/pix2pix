@@ -50,7 +50,7 @@ trainer = L1Trainer(
 if config.wandb_file_name is not None and config.wandb_run_path is not None:
     import wandb
     f = wandb.restore(config.wandb_file_name, config.wandb_run_path)
-    state_dict = torch.load(f, map_location=config.device)
+    state_dict = torch.load(f.name, map_location=config.device)
     trainer.load_state_dict(state_dict)
 
 trainer.train(config.num_epochs)
