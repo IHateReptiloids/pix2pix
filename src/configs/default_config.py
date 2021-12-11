@@ -30,7 +30,7 @@ class DefaultConfig:
     # Training params
     lambda_l1: float = 100.0
     epoch_num_iters: int = 2000
-    num_epochs: int = 50
+    num_epochs: int = 40
     train_batch_size: int = 1
     train_log_freq: int = 500
     train_num_workers: int = 0
