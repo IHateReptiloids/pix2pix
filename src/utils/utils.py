@@ -17,3 +17,8 @@ def seed_all(seed):
     torch.backends.cudnn.benchmark = False
     torch.use_deterministic_algorithms(True)
     return g
+
+
+def set_requires_grad(net, requires_grad: bool):
+    for param in net.parameters():
+        param.requires_grad = requires_grad
