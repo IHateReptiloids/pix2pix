@@ -105,9 +105,10 @@ class L1Trainer:
         for x, y in loader:
             loss = self.process_batch(x, y, train=False)
             total_loss += loss.item()
+        total_loss /= len(self.val_loader)
         if self.logger is not None:
             self.logger.commit()
             self.logger.run.log(
                 {'val/loss': total_loss}, step=self.scheduler.last_epoch
             )
-        return total_loss / len(self.val_loader)
+        return total_loss
