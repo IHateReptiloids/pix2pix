@@ -21,6 +21,11 @@ MODES = {
     'l1': UNet
 }
 
+STATE_DICT_KEY = {
+    'gan': 'gan',
+    'l1': 'model'
+}
+
 RESULT_DIR = Path('examples')
 
 
@@ -40,7 +45,7 @@ wandb.init(config=config, group=f'{config.dataset}-{config.mode}')
 assert config.wandb_file_name is not None and config.wandb_run_path is not None
 f = wandb.restore(config.wandb_file_name, config.wandb_run_path)
 state_dict = torch.load(f.name, map_location=config.device)
-model.load_state_dict(state_dict['model'])
+model.load_state_dict(state_dict[STATE_DICT_KEY[config.mode]])
 model.eval()
 
 table = wandb.Table(
