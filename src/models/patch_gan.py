@@ -26,7 +26,7 @@ class PatchGAN(nn.Module):
             batch_norm = True
         layers.append(nn.Conv2d(
             in_channels=hidden_channels[-1], out_channels=1,
-            kernel_size=kernel_size, padding=padding)
+            kernel_size=kernel_size)
         )
         self.net = nn.Sequential(*layers)
 
