@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 
 from .patch_gan import PatchGAN
@@ -37,6 +38,10 @@ class Pix2Pix(nn.Module):
             stride,
             relu_slope
         )
+
+    @torch.no_grad()
+    def forward(self, x):
+        return self.G(x)
 
     @classmethod
     def from_config(cls, config):
