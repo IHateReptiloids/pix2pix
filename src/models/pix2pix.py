@@ -2,6 +2,7 @@ import torch.nn as nn
 
 from .patch_gan import PatchGAN
 from .unet import UNet
+from src.utils import set_requires_grad
 
 
 class Pix2Pix(nn.Module):
@@ -50,3 +51,9 @@ class Pix2Pix(nn.Module):
             config.relu_slope,
             config.dropout
         )
+
+    def freeze_discriminator(self):
+        set_requires_grad(self.D, False)
+
+    def unfreeze_discriminator(self):
+        set_requires_grad(self.D, True)
