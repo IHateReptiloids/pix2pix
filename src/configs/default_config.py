@@ -28,6 +28,7 @@ class DefaultConfig:
     lr: float = 2e-4
     betas: Tuple[float, float] = (0.5, 0.999)
     # Training params
+    lambda_l1: float = 100.0
     epoch_num_iters: int = 2000
     num_epochs: int = 50
     train_batch_size: int = 1
