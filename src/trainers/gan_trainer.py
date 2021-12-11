@@ -106,7 +106,7 @@ class GANTrainer:
                 i % self._checkpointing_freq == 0
             ):
                 path = self._checkpoint_dir / \
-                    f'state{self.scheduler.last_epoch}.pth'
+                    f'state{self.scheduler_g.last_epoch}.pth'
                 print(f'Saving checkpoint after epoch {i} to {path}')
                 torch.save(self.state_dict(), path)
             print('-' * 100)
