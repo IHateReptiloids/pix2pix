@@ -48,6 +48,8 @@ class GANTrainer:
         self.scheduler_d.load_state_dict(state['scheduler_d'])
 
     def process_batch(self, x, y, train: bool):
+        x = x.to(self.device)
+        y = y.to(self.device)
         fake = self.gan.G(x)
         if train:
             self.gan.unfreeze_discriminator()
