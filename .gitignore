@@ -131,4 +131,5 @@ dmypy.json
 # Mine
 .vscode/
 data/
+examples/
 wandb/
