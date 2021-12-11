@@ -28,7 +28,6 @@ class PatchGAN(nn.Module):
             in_channels=hidden_channels[-1], out_channels=1,
             kernel_size=kernel_size, padding=padding)
         )
-        layers.append(nn.Sigmoid())
         self.net = nn.Sequential(*layers)
 
     def forward(self, x, y):
