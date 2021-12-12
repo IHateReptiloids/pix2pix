@@ -1,5 +1,5 @@
 # pix2pix
-My implementation of [pix2pix](https://arxiv.org/abs/1611.07004)
+My implementation of [pix2pix](https://arxiv.org/abs/1611.07004).
 Supports only facades and edges2shoes datasets.
 
 ## Installation
